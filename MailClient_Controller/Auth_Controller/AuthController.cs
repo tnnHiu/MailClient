@@ -14,20 +14,14 @@ namespace MailClient_Controller.Auth_Controller
         private readonly IMAPService imapService = IMAPService.Instance;
 
        
-        private bool SendRequest(string command, object parameters)
+        private bool SendRequest(object command)
         {
             TcpClient client = imapService._client;
             using NetworkStream stream = client.GetStream();
             using StreamReader reader = new StreamReader(stream, Encoding.UTF8);
             using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
 
-            var request = new
-            {
-                Command = command,
-                Data = parameters
-            };
-
-            string jsonCommand = JsonConvert.SerializeObject(request);
+            string jsonCommand = JsonConvert.SerializeObject(command);
             writer.WriteLine(jsonCommand);
 
             var timeout = DateTime.Now.AddSeconds(10);
@@ -58,21 +52,23 @@ namespace MailClient_Controller.Auth_Controller
         {
             var registerCommand = new
             {
+                Command = "REGISTER",
                 Username = "vantn.21it",
                 Fullname = "Tào Nguyên Văn",
                 Password = "12345678"
             };
-            return SendRequest("REGISTER", registerCommand);
+            return SendRequest(registerCommand);
         }
 
         public bool SignIn()
         {
             var loginCommand = new
             {
+                Command = "LOGIN",
                 Username = "vantn.21it",
                 Password = "87654321"
             };
-            return SendRequest("LOGIN", loginCommand);
+            return SendRequest(loginCommand);
         }
     }
 }
