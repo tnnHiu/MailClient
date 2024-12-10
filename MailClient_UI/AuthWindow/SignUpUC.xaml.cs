@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace MailClient_UI.AuthWindow
+{
+    /// <summary>
+    /// Interaction logic for SignUpUC.xaml
+    /// </summary>
+    public partial class SignUpUC : UserControl
+    {
+        public SignUpUC()
+        {
+            InitializeComponent();
+        }
+
+        private void btnToSignIn_Click(object sender, RoutedEventArgs e)
+        {
+            SignInUC signInUC = new SignInUC();
+            AuthWindow authWindow = (AuthWindow)Application.Current.MainWindow;
+            authWindow.mainContentControl.Content = signInUC;
+        }
+    }
+}

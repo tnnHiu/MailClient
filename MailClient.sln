@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailClient_UI", "MailClient_UI\MailClient_UI.csproj", "{A90E8112-942F-4E41-8CA6-3C4EAEF8B5A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailClient_Controller", "MailClient_Controller\MailClient_Controller.csproj", "{EA71EEE7-EF08-45A2-9F5C-8A9E20FCEA01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A90E8112-942F-4E41-8CA6-3C4EAEF8B5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A90E8112-942F-4E41-8CA6-3C4EAEF8B5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A90E8112-942F-4E41-8CA6-3C4EAEF8B5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A90E8112-942F-4E41-8CA6-3C4EAEF8B5A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA71EEE7-EF08-45A2-9F5C-8A9E20FCEA01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA71EEE7-EF08-45A2-9F5C-8A9E20FCEA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA71EEE7-EF08-45A2-9F5C-8A9E20FCEA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA71EEE7-EF08-45A2-9F5C-8A9E20FCEA01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

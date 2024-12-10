@@ -1,0 +1,21 @@
+﻿<Application x:Class="MailClient_UI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MailClient_UI"
+             StartupUri="\AuthWindow\AuthWindow.xaml">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source=".\Resource\Styles\DescriptionText.xaml" />
+                <ResourceDictionary Source=".\Resource\Styles\SignUpButton.xaml" />
+                <ResourceDictionary Source=".\Resource\Styles\TitleText.xaml" />
+                <ResourceDictionary Source=".\Resource\Styles\ButtonCircle.xaml" />
+                <ResourceDictionary Source=".\Resource\Styles\TextHint.xaml" />
+                <ResourceDictionary Source=".\Resource\Styles\TextBox.xaml" />
+                <ResourceDictionary Source=".\Resource\Styles\SignInButton.xaml" />
+                <ResourceDictionary Source=".\Resource\Styles\ImgClose.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
