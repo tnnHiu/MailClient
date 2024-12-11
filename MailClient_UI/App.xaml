@@ -15,6 +15,9 @@
                 <ResourceDictionary Source=".\Resource\Styles\TextBox.xaml" />
                 <ResourceDictionary Source=".\Resource\Styles\SignInButton.xaml" />
                 <ResourceDictionary Source=".\Resource\Styles\ImgClose.xaml" />
+                <ResourceDictionary Source=".\Resource\Styles\CheckBox.xaml" />
+                <ResourceDictionary Source=".\Resource\Styles\DataGrid.xaml" />
+                <ResourceDictionary Source=".\Resource\Styles\MainWindowStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

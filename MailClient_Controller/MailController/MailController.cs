@@ -1,20 +1,31 @@
 ﻿using MailClient_Controller.Enities;
+using MailClient_Controller.Service;
 using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Text;
-namespace MailClient_Controller.Auth_Controller
+
+namespace MailClient_Controller.MailController
 {
-    public class AuthController
+    public class MailController
     {
-        private bool SendRequest(object command)
+        public string UserName { get; set; }
+        private readonly IMAPService imapService = IMAPService.Instance;
+
+        private List<Mail> SendRequest(object command)
         {
+            List<Mail> mails = new List<Mail>();
+            TcpClient client = imapService._client;
+            if (client == null || !client.Connected)
+            {
+                client = imapService._client;
+            }
             NetworkStream stream = null;
             StreamReader reader = null;
             StreamWriter writer = null;
             try
             {
                 stream = IMAPService.Instance._client.GetStream();
-                if (stream == null) return false;
+                if (stream == null) return mails;
 
                 reader = new StreamReader(stream, Encoding.UTF8);
                 writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
@@ -23,7 +34,6 @@ namespace MailClient_Controller.Auth_Controller
                 writer.WriteLine(jsonCommand);
 
                 var timeout = DateTime.Now.AddSeconds(10);
-
                 while (DateTime.Now < timeout)
                 {
                     if (stream.DataAvailable)
@@ -31,15 +41,10 @@ namespace MailClient_Controller.Auth_Controller
                         string response = reader.ReadLine();
                         if (response != null)
                         {
-                            ServerResponse serverResponse = ServerResponse.FromJson(response);
-                            if (serverResponse.Status.Contains("OK"))
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                return false;
-                            }
+                            ServerResponse serverResponse = new ServerResponse();
+                            serverResponse = ServerResponse.FromJson(response);
+                            mails = serverResponse.Mails;
+                            return mails;
                         }
                     }
                 }
@@ -48,32 +53,21 @@ namespace MailClient_Controller.Auth_Controller
             {
                 Console.WriteLine($"Error in SendRequest: {ex.Message}");
             }
-
-            return false;
+            return mails;
+        }
+        public MailController(string userName)
+        {
+            UserName = userName;
         }
 
-        public bool SignUp(string username, string fullname, string password)
+        public List<Mail> fetchMail()
         {
-            var registerCommand = new
+            var selectCommand = new
             {
-                Command = "REGISTER",
-                Username = username,
-                Fullname = fullname,
-                Password = password
+                Command = "SELECT",
+                Mailbox = "INBOX"
             };
-            return SendRequest(registerCommand);
-        }
-
-        public bool SignIn(string username, string password)
-        {
-            var loginCommand = new
-            {
-                Command = "LOGIN",
-                Username = username,
-                Password = password
-            };
-            return SendRequest(loginCommand);
+            return SendRequest(selectCommand);
         }
     }
 }
-

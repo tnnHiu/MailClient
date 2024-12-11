@@ -1,19 +1,8 @@
 ﻿using MailClient_Controller.Auth_Controller;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MailClient_UI.AuthWindow
 {
@@ -68,7 +57,6 @@ namespace MailClient_UI.AuthWindow
             authWindow.mainContentControl.Content = signUpUC;
         }
 
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string username = txtEmail.Text;
@@ -76,7 +64,18 @@ namespace MailClient_UI.AuthWindow
 
             if (authController.SignIn(username, password))
             {
-                MessageBox.Show("Ok");
+                try
+                {
+                    MainWindow mainWindow = new MainWindow(username);
+                    mainWindow.Show();
+                    Window thisWindow = Window.GetWindow(this);
+                    thisWindow.Close();
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"BtnSignIn {ex}");
+                }
             }
             else
             {

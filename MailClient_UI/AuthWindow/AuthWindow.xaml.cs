@@ -22,8 +22,6 @@ namespace MailClient_UI.AuthWindow
         public AuthWindow()
         {
             InitializeComponent();
-            //var signInUC = new SignInUC();
-            //mainContentControl.Content = signInUC;
             SignUpUC signUpUC = new SignUpUC();
             mainContentControl.Content = signUpUC;
         }

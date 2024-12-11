@@ -7,9 +7,7 @@ using System.Windows;
 
 namespace MailClient_UI
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+
     public partial class App : Application
     {
         protected override void OnStartup(StartupEventArgs e)
@@ -17,25 +15,18 @@ namespace MailClient_UI
             base.OnStartup(e);
             try
             {
-                IMAPService.Instance.Initialize("localhost");
+                string serverIp = "192.168.1.16";
+                IMAPService.Instance.Initialize(serverIp);
 
-                SMTPService.Instance.Initialize("localhost");
+                SMTPService.Instance.Initialize(serverIp);
 
-                FTPService.Instacnce.Initialize("localhost");
-
-                AuthController controller = new AuthController();
-
-                if (!controller.Capability())
-                {
-                    throw new Exception("Err");
-                }
+                FTPService.Instacnce.Initialize(serverIp);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"OnStartUp: {ex.Message}");
             }
         }
-
         protected override void OnExit(ExitEventArgs e)
         {
             base.OnExit(e);

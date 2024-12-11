@@ -108,9 +108,15 @@ namespace MailClient_UI.AuthWindow
             string username = txtEmail.Text;
             string fullname = txtName.Text;
             string password = txtPassword.Password;
-            if (authController.SignUp(username, fullname,password))
+            if (authController.SignUp(username, fullname, password))
             {
-                MessageBox.Show("Ok");
+                //MainWindow mainWindow = new MainWindow(username);
+                //mainWindow.Show();
+                //Window thisWindow = Window.GetWindow(this);
+                //thisWindow.Close();
+                SignInUC signInUC = new SignInUC();
+                AuthWindow authWindow = (AuthWindow)Application.Current.MainWindow;
+                authWindow.mainContentControl.Content = signInUC;
             }
             else
             {
