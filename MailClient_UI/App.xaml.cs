@@ -1,4 +1,5 @@
-﻿using MailClient_Controller.Service;
+﻿using MailClient_Controller.Auth_Controller;
+using MailClient_Controller.Service;
 using System.Configuration;
 using System.Data;
 using System.DirectoryServices.ActiveDirectory;
@@ -14,18 +15,20 @@ namespace MailClient_UI
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
             try
             {
                 IMAPService.Instance.Initialize("localhost");
-                IMAPService.Instance.StartService();
 
                 SMTPService.Instance.Initialize("localhost");
-                SMTPService.Instance.StartService();
 
                 FTPService.Instacnce.Initialize("localhost");
-                FTPService.Instacnce.StartService();
 
+                AuthController controller = new AuthController();
+
+                if (!controller.Capability())
+                {
+                    throw new Exception("Err");
+                }
             }
             catch (Exception ex)
             {

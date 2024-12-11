@@ -1,8 +1,6 @@
 ﻿using MailClient_Controller.Enities;
 using MailClient_Controller.Service;
 using Newtonsoft.Json;
-using System;
-using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,39 +11,69 @@ namespace MailClient_Controller.Auth_Controller
     {
         private readonly IMAPService imapService = IMAPService.Instance;
 
-       
         private bool SendRequest(object command)
         {
+            imapService.StartService();
             TcpClient client = imapService._client;
-            using NetworkStream stream = client.GetStream();
-            using StreamReader reader = new StreamReader(stream, Encoding.UTF8);
-            using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
-
-            string jsonCommand = JsonConvert.SerializeObject(command);
-            writer.WriteLine(jsonCommand);
-
-            var timeout = DateTime.Now.AddSeconds(10);
-            while (DateTime.Now < timeout)
+            if (client == null || !client.Connected)
             {
-                if (stream.DataAvailable)
+                imapService.StartService();
+                client = imapService._client;
+            }
+            NetworkStream stream = null;
+            StreamReader reader = null;
+            StreamWriter writer = null;
+
+            try
+            {
+                stream = client.GetStream();
+                reader = new StreamReader(stream, Encoding.UTF8);
+                writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
+
+                string jsonCommand = JsonConvert.SerializeObject(command);
+                writer.WriteLine(jsonCommand);
+
+                var timeout = DateTime.Now.AddSeconds(10);
+                while (DateTime.Now < timeout)
                 {
-                    string response = reader.ReadLine();
-                    if (response != null)
+                    if (stream.DataAvailable)
                     {
-                        ServerResponse serverResponse = ServerResponse.FromJson(response);
-                        if (serverResponse.Status.Contains("OK"))
+                        string response = reader.ReadLine();
+                        if (response != null)
                         {
-                            return true;
+                            ServerResponse serverResponse = ServerResponse.FromJson(response);
+                            if (serverResponse.Status.Contains("OK"))
+                            {
+                                return true;
+                            }
                         }
                     }
+                    else
+                    {
+                        Task.Delay(100).Wait();
+                    }
                 }
-                else
-                {
-                    Task.Delay(100).Wait();
-                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in SendRequest: {ex.Message}");
+            }
+            finally
+            {
+                writer?.Dispose();
+                reader?.Dispose();
+                stream?.Dispose();
             }
 
             return false;
+        }
+        public bool Capability()
+        {
+            var capabilitycommand = new
+            {
+                Command = "CAPABILITY"
+            };
+            return SendRequest(capabilitycommand);
         }
 
         public bool SignUp()
@@ -53,8 +81,8 @@ namespace MailClient_Controller.Auth_Controller
             var registerCommand = new
             {
                 Command = "REGISTER",
-                Username = "vantn.21it",
-                Fullname = "Tào Nguyên Văn",
+                Username = "hieutnn.21it",
+                Fullname = "Trinh Nguyen Nhat Hieu",
                 Password = "12345678"
             };
             return SendRequest(registerCommand);

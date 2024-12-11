@@ -29,7 +29,6 @@ namespace MailClient_Controller.Service
                 Console.WriteLine("Cannot start IMAP service. Server IP is not initialized.");
                 return;
             }
-
             try
             {
                 // Nếu _client là null, khởi tạo mới
