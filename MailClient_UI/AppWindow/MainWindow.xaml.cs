@@ -2,16 +2,17 @@
 using MailClient_Controller.Enities;
 using MailClient_Controller.MailController;
 using MailClient_Controller.Service;
+using MailClient_UI.AppWindow.MailControl;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace MailClient_UI
 {
     public partial class MainWindow : Window
     {
-
-
         MailController mailControler;
         List<Mail> mailList;
         public string Username { get; set; }
@@ -20,17 +21,7 @@ namespace MailClient_UI
         {
             InitializeComponent();
             Username = username;
-            if(!IMAPService.Instance._client.Connected)
-            {
-                Debug.WriteLine("Client not connected");
-            }
-            fetchMailBox();
-        }
-        private void fetchMailBox()
-        {
-            mailControler = new MailController(Username);
-            mailList = mailControler.fetchMail();
-            membersDataGrid.ItemsSource = mailList;
+            LoadUserControl(new InboxUC(Username));
         }
         private bool IsMaximize = false;
 
@@ -63,39 +54,47 @@ namespace MailClient_UI
             }
         }
 
-        private void Compose_Button(object sender, RoutedEventArgs e)
+        private void btnCompose_Click(object sender, RoutedEventArgs e)
+        {
+            LoadUserControl(new ComposeUC(Username));
+        }
+
+        private void btnInbox_Click(object sender, RoutedEventArgs e)
+        {
+            LoadUserControl(new InboxUC(Username));
+        }
+
+        private void btnStarred_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void btnSent_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void AllMail_Button(object sender, RoutedEventArgs e)
+        private void btnTrash_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void Trash_Button(object sender, RoutedEventArgs e)
+        private void btnAll_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void Sent_Button(object sender, RoutedEventArgs e)
+        private void btnSignOut_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void Inbox_Button(object sender, RoutedEventArgs e)
+        private void LoadUserControl(UserControl userControl)
         {
-
-        }
-
-        private void SignOut_Button(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnComposeMail_Click(object sender, RoutedEventArgs e)
-        {
-
+            if (userControl != null)
+            {
+                this.userControl.Content = userControl;
+            }
         }
     }
 }

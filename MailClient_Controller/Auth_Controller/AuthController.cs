@@ -6,6 +6,8 @@ namespace MailClient_Controller.Auth_Controller
 {
     public class AuthController
     {
+        IMAPService iMAPService = IMAPService.Instance;
+
         private bool SendRequest(object command)
         {
             NetworkStream stream = null;
@@ -13,7 +15,7 @@ namespace MailClient_Controller.Auth_Controller
             StreamWriter writer = null;
             try
             {
-                stream = IMAPService.Instance._client.GetStream();
+                stream = iMAPService._client.GetStream();
                 if (stream == null) return false;
 
                 reader = new StreamReader(stream, Encoding.UTF8);

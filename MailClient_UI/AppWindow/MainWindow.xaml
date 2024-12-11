@@ -13,7 +13,6 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </Window.Resources>
-
     <Border Background="#eff2f7"
             CornerRadius="30"
             MouseDown="Border_MouseDown"
@@ -48,9 +47,10 @@
                                    Background="#7e5fdc" />
                         <!--Menu Buttons-->
                         <StackPanel DockPanel.Dock="Top">
-                            <Button Name="btnComposeMail"
+
+                            <Button Name="btnCompose"
                                     Style="{StaticResource menuButton}"
-                                   >
+                                    Click="btnCompose_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="BookEditOutline"
                                                            Style="{StaticResource topMenuButtonIcon}" />
@@ -59,7 +59,8 @@
                             </Button>
 
                             <Button Name="btnInbox"
-                                    Style="{StaticResource menuButton}">
+                                    Style="{StaticResource menuButton}"
+                                    Click="btnInbox_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="HomeVariant"
                                                            Style="{StaticResource menuButtonIcon}" />
@@ -67,7 +68,9 @@
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource menuButton}">
+                            <Button Name="btnStarred"
+                                    Style="{StaticResource menuButton}"
+                                    Click="btnStarred_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="Star"
                                                            Style="{StaticResource menuButtonIcon}" />
@@ -76,7 +79,8 @@
                             </Button>
 
                             <Button Name="btnSent"
-                                    Style="{StaticResource menuButton}">
+                                    Style="{StaticResource menuButton}"
+                                    Click="btnSent_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="Send"
                                                            Style="{StaticResource menuButtonIcon}" />
@@ -84,8 +88,9 @@
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource menuButton}"
-                                    >
+                            <Button Name="btnTrash"
+                                    Style="{StaticResource menuButton}"
+                                    Click="btnTrash_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="TrashCanOutline"
                                                            Style="{StaticResource menuButtonIcon}" />
@@ -93,8 +98,9 @@
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource menuButton}"
-                                    >
+                            <Button Name="btnAll"
+                                    Style="{StaticResource menuButton}"
+                                    Click="btnAll_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="Gmail"
                                                            Style="{StaticResource menuButtonIcon}" />
@@ -103,11 +109,12 @@
                             </Button>
 
                         </StackPanel>
-                        <Button Style="{StaticResource menuButton}"
+                        <Button Name="btnSignOut"
+                                Style="{StaticResource menuButton}"
                                 VerticalAlignment="Bottom"
                                 DockPanel.Dock="Bottom"
                                 Margin="15 0 15 20"
-                                Click="SignOut_Button">
+                                Click="btnSignOut_Click">
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Kind="Logout"
                                                        Style="{StaticResource menuButtonIcon}" />
@@ -120,126 +127,9 @@
             <!--Main Section-->
             <Grid Grid.Column="1"
                   Margin="30 20 20 20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-
-                <!--Search Textbox-->
-                <Grid Width="300"
-                      HorizontalAlignment="Left">
-                    <TextBlock Margin="20 0"
-                               VerticalAlignment="Center"
-                               Foreground="#B0B9C6"
-                               IsHitTestVisible="False"
-                               Panel.ZIndex="1"
-                               Text="Search here ..."
-                               Visibility="{Binding ElementName=textBoxSearch, Path=Text, Converter={StaticResource BoolToVis}}" />
-
-                    <TextBox Name="textBoxSearch"
-                             Style="{StaticResource searchTextbox}" />
-
-                    <Icon:PackIconMaterial Kind="Magnify"
-                                           Width="15"
-                                           Height="15"
-                                           VerticalAlignment="Center"
-                                           Margin="0 0 15 0"
-                                           Foreground="#B0B9C6"
-                                           HorizontalAlignment="Right" />
-                </Grid>
-                <!--Top Buttons-->
-                <Button Style="{StaticResource topButton}"
-                        Margin="0 0 20 0"
-                        Background="#dcdcdc">
-                    <Icon:PackIconMaterial Kind="Cog" />
-                </Button>
-
-                <Button Style="{StaticResource topButton}"
-                        Margin="0 0 55 0">
-                    <Icon:PackIconMaterial Kind="Bell" />
-                </Button>
-
-                <!--Page Title-->
-                <TextBlock Grid.Row="1"
-                           FontSize="32"
-                           FontWeight="SemiBold"
-                           Margin="0 20 0 0"
-                           Foreground="#121518"
-                           HorizontalAlignment="Left"><Run Language="vi-vn"
-                                                           Text="Mail" /><LineBreak /><Run Language="vi-vn" /></TextBlock>
-
-                <!--Add Button-->
-                <Button Style="{StaticResource addButton}">
-                    <StackPanel Orientation="Horizontal">
-                        <Icon:PackIconMaterial Kind="Plus"
-                                               VerticalAlignment="Center"
-                                               Margin="0 1 8 0"
-                                               Width="11"
-                                               Height="11" />
-                        <TextBlock Text="Tải lại" />
-                    </StackPanel>
-                </Button>
-                <!--Seprator-->
-                <Separator Height="1"
-                           Grid.Row="3"
-                           Background="#DAE2EA"
-                           Margin="0 -1 0 10" />
-                <!--Members Data Grid-->
-                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}"
-                          ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
-                          CellStyle="{DynamicResource DataGridCellStyle1}"
-                          x:Name="membersDataGrid"
-                          Style="{DynamicResource DataGridStyle1}">
-                    <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Header="check"
-                                                CanUserResize="False"
-                                                Width="auto"
-                                                ElementStyle="{StaticResource CheckBoxStyle1}">
-                            <DataGridCheckBoxColumn.HeaderTemplate>
-                                <DataTemplate>
-                                    <CheckBox Style="{StaticResource CheckBoxStyle1}" />
-                                </DataTemplate>
-                            </DataGridCheckBoxColumn.HeaderTemplate>
-                        </DataGridCheckBoxColumn>
-                        <DataGridTextColumn Header="Từ"
-                                            IsReadOnly="True"
-                                            Width="*"
-                                            Binding="{Binding Sender}" />
-                        <DataGridTextColumn Header="Tiêu đề"
-                                            IsReadOnly="True"
-                                            Width="*"
-                                            Binding="{Binding Sender}" />
-                        <DataGridTextColumn Header="Thời Gian"
-                                            IsReadOnly="True"
-                                            Width="*"
-                                            Binding="{Binding Sender}" />
-                        <DataGridTemplateColumn Header=""
-                                                IsReadOnly="True"
-                                                Width="auto">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Style="{StaticResource gridEditButton}">
-                                            <Icon:PackIconMaterial Kind="PencilOutline"
-                                                                   Style="{StaticResource gridButtonIcon}" />
-                                        </Button>
-                                        <Button Margin="5 0 0 0"
-                                                Style="{StaticResource gridRemoveButton}">
-                                            <Icon:PackIconMaterial Kind="DeleteOutline"
-                                                                   Style="{StaticResource gridButtonIcon}" />
-                                        </Button>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                <ContentControl Name="userControl" />
             </Grid>
+
         </Grid>
     </Border>
 </Window>

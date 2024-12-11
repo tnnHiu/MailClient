@@ -29,7 +29,7 @@ public class IMAPService
             Console.WriteLine($"Error in Initialize: {ex.Message}");
         }
     }
-    // Dừng kết nối khi không cần thiết
+ 
     public void StopService()
     {
         try

@@ -1,4 +1,5 @@
 ﻿
+using System.Diagnostics;
 using System.Net.Sockets;
 
 namespace MailClient_Controller.Service
@@ -20,43 +21,18 @@ namespace MailClient_Controller.Service
         public void Initialize(string serverIp)
         {
             if (string.IsNullOrWhiteSpace(serverIp))
-                throw new ArgumentException("Server IP cannot be null or empty.", nameof(serverIp));
-
+                throw new ArgumentException("Server IP cannot be null or empty.");
             ServerIp = serverIp;
-        }
-
-        public void StartService()
-        {
-            if (string.IsNullOrWhiteSpace(ServerIp))
-            {
-                Console.WriteLine("Cannot start SMTP service. Server IP is not initialized.");
-                return;
-            }
-
             try
             {
-                if (_client == null)
-                {
-                    _client = new TcpClient(ServerIp, SMTPPort);
-                    Console.WriteLine("SMTP Connected.");
-                }
-                else if (!_client.Connected)
-                {
-                    _client.Close();
-                    _client = new TcpClient(ServerIp, SMTPPort);
-                    Console.WriteLine("IMAP Reconnected.");
-                }
-            }
-            catch (SocketException ex)
-            {
-                Console.WriteLine($"Failed to connect to SMTP server: {ex.Message}");
+                _client = new TcpClient(ServerIp, SMTPPort);
+                Debug.WriteLine("Connected to SMTP server.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Unexpected error while starting SMTP service: {ex}");
+                Console.WriteLine($"Error in Initialize: {ex.Message}");
             }
         }
-
         public void StopService()
         {
             try
@@ -64,16 +40,16 @@ namespace MailClient_Controller.Service
                 if (_client != null && _client.Connected)
                 {
                     _client.Close();
-                    Console.WriteLine("SMTP Service stopped.");
+                    Debug.WriteLine("SMTP Service stopped.");
                 }
                 else
                 {
-                    Console.WriteLine("SMTP Service is not running.");
+                    Debug.WriteLine("SMTP Service is not running.");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error while stopping SMTP service: {ex.Message}");
+                Debug.WriteLine($"Error while stopping IMAP service: {ex.Message}");
             }
         }
     }
