@@ -18,7 +18,6 @@
         <Image Source="/Image/close.png"
                Grid.Column="1"
                Panel.ZIndex="1"
-             
                Style="{StaticResource imgClose}" />
 
         <!--SignUp Panel-->
@@ -64,7 +63,7 @@
                                Opacity=".8"
                                Margin="20 30" />
                     <Button Name="btnToSignIn"
-                        Content="Đăng Nhập"
+                            Content="Đăng Nhập"
                             Style="{StaticResource signUpButton}"
                             Click="btnToSignIn_Click" />
                 </StackPanel>
@@ -74,15 +73,14 @@
         <!--SignIn Panel-->
         <Border Background="#ffffff"
                 Grid.Column="1"
-                CornerRadius="0 10 10 0"
-                >
+                CornerRadius="0 10 10 0">
             <StackPanel VerticalAlignment="Center">
-                
+
                 <!--SignUn Heading-->
                 <TextBlock Text="Đăng Ký"
                            Style="{StaticResource titleText}"
                            Foreground="#FF160057" />
-                
+
                 <!--Name Field-->
                 <Border BorderThickness="1"
                         BorderBrush="#acb0af"
@@ -98,9 +96,11 @@
                                Height="20"
                                Opacity=".5" />
                         <TextBlock x:Name="textName"
+                                   MouseDown="textName_MouseDown"
                                    Text="Name"
                                    Style="{StaticResource textHint}" />
                         <TextBox x:Name="txtName"
+                                 TextChanged="txtName_TextChanged"
                                  Style="{StaticResource textbox}" />
                     </Grid>
                 </Border>
@@ -120,14 +120,14 @@
                                Height="20"
                                Opacity=".5" />
                         <TextBlock x:Name="textEmail"
+                                   MouseDown="textEmail_MouseDown"
                                    Text="Email"
                                    Style="{StaticResource textHint}" />
                         <TextBox x:Name="txtEmail"
+                                 TextChanged="txtEmail_TextChanged"
                                  Style="{StaticResource textbox}" />
                     </Grid>
                 </Border>
-
-
 
                 <!--Password Field-->
                 <Border BorderThickness="1"
@@ -144,16 +144,14 @@
                                Height="20"
                                Opacity=".5" />
                         <TextBlock x:Name="textPassword"
-                                 
                                    Text="Password"
+                                   MouseDown="textPassword_MouseDown"
                                    Style="{StaticResource textHint}" />
                         <PasswordBox x:Name="txtPassword"
-                                   
+                                     PasswordChanged="txtPassword_PasswordChanged"
                                      Style="{StaticResource textbox}" />
                     </Grid>
                 </Border>
-
-
                 <!--Confirm Password Field-->
                 <Border BorderThickness="1"
                         BorderBrush="#acb0af"
@@ -168,18 +166,20 @@
                         <Image Source="\Resource\Images\lock.png"
                                Height="20"
                                Opacity=".5" />
-                        <TextBlock x:Name="textConfirmPassword"                                 
+                        <TextBlock x:Name="textConfirmPassword"
+                                   MouseDown="textConfirmPassword_MouseDown"
                                    Text="Confirm Password"
                                    Style="{StaticResource textHint}" />
-                        <PasswordBox x:Name="txtConfirmPassword"                               
+                        <PasswordBox x:Name="txtConfirmPassword"
+                                     PasswordChanged="txtConfirmPassword_PasswordChanged"
                                      Style="{StaticResource textbox}" />
                     </Grid>
                 </Border>
-
                 <!--SignIn Button-->
-                <Button Content="Đăng Ký"                    
-                        Style="{StaticResource signInButton}" />
-
+                <Button Name="btnSignUp"
+                        Content="Đăng Ký"
+                        Style="{StaticResource signInButton}"
+                        Click="btnSignUp_Click" />
             </StackPanel>
         </Border>
     </Grid>

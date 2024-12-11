@@ -76,25 +76,25 @@ namespace MailClient_Controller.Auth_Controller
             return SendRequest(capabilitycommand);
         }
 
-        public bool SignUp()
+        public bool SignUp(string username, string fullname, string password)
         {
             var registerCommand = new
             {
                 Command = "REGISTER",
-                Username = "hieutnn.21it",
-                Fullname = "Trinh Nguyen Nhat Hieu",
-                Password = "12345678"
+                Username = username,
+                Fullname = fullname,
+                Password = password
             };
             return SendRequest(registerCommand);
         }
 
-        public bool SignIn()
+        public bool SignIn(string username, string password)
         {
             var loginCommand = new
             {
                 Command = "LOGIN",
-                Username = "vantn.21it",
-                Password = "87654321"
+                Username = username,
+                Password = password
             };
             return SendRequest(loginCommand);
         }

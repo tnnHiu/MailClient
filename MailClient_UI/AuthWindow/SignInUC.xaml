@@ -55,8 +55,8 @@
                                Style="{StaticResource descriptionText}"
                                Opacity=".8"
                                Margin="20 30" />
-                    <Button Name="btnToSignUp" 
-                        Content="Đăng Ký"
+                    <Button Name="btnToSignUp"
+                            Content="Đăng Ký"
                             Style="{StaticResource signUpButton}"
                             Click="btnToSignUp_Click" />
                 </StackPanel>
@@ -88,14 +88,15 @@
                                Height="20"
                                Opacity=".5" />
                         <TextBlock x:Name="textEmail"
+                                   MouseDown="textEmail_MouseDown"
                                    Text="Email"
                                    Style="{StaticResource textHint}" />
                         <TextBox x:Name="txtEmail"
+                                 TextChanged="txtEmail_TextChanged"
                                  Style="{StaticResource textbox}" />
                     </Grid>
                 </Border>
-
-
+                
                 <!--Password Field-->
                 <Border BorderThickness="1"
                         BorderBrush="#acb0af"
@@ -111,17 +112,18 @@
                                Height="20"
                                Opacity=".5" />
                         <TextBlock x:Name="textPassword"
+                                   MouseDown="textPassword_MouseDown"
                                    Text="Mật khẩu"
                                    Style="{StaticResource textHint}" />
                         <PasswordBox x:Name="txtPassword"
+                                     PasswordChanged="txtPassword_PasswordChanged"
                                      Style="{StaticResource textbox}" />
                     </Grid>
                 </Border>
 
                 <!--SignIn Button-->
-                <Button 
-                    Name="btnLogin"
-                    Content="Đăng Nhập"
+                <Button Name="btnLogin"
+                        Content="Đăng Nhập"
                         Style="{StaticResource signInButton}"
                         Click="Button_Click" />
 
