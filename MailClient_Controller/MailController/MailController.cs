@@ -198,6 +198,38 @@ namespace MailClient_Controller.MailController
                     SendEmailRequest(dataCommand));
         }
 
+        public bool ReplyEmail(Mail mail)
+        {
+            var mailFromCommand = new
+            {
+                Command = "MAIL FROM",
+                Email = mail.Sender
+            };
+
+            var rcptToCommand = new
+            {
+                Command = "RCPT TO",
+                Email = mail.Receiver
+            };
+
+            var replyCommand = new
+            {
+                Command = "REPLY",
+                Mailid = mail.Id,
+            };
+
+            var dataCommand = new
+            {
+                Command = "DATA",
+                Subject = mail.Subject,
+                Content = mail.Content
+            };
+
+            return (SendEmailRequest(mailFromCommand) &&
+                   SendEmailRequest(rcptToCommand) &&
+                   SendEmailRequest(replyCommand) &&
+                   SendEmailRequest(dataCommand));
+        }
         public List<Mail> fetchMailDetail(int id)
         {
             var fetchMailDetailCommand = new

@@ -13,11 +13,13 @@ namespace MailClient_UI.AppWindow.Modal
     {
         public List<Mail> mails = new List<Mail>();
         MailController mailController;
+
+        Mail mail;
+
         public int MailId { get; set; }
         public string UserName { get; set; }
 
-
-        public MaiLDetail(int mailId, string username )
+        public MaiLDetail(int mailId, string username)
         {
             InitializeComponent();
 
@@ -74,7 +76,17 @@ namespace MailClient_UI.AppWindow.Modal
 
         private void btnReply_Click(object sender, RoutedEventArgs e)
         {
-
+       
+            Mail mail = mails.First();
+            if (mail != null)
+            {
+                ReplyModal replyModal = new ReplyModal(mail, UserName)
+                {
+                    Owner = this,
+                };          
+                replyModal.ShowDialog();
+                CloseModal();
+            }         
         }
 
         private void btnForward_Click(object sender, RoutedEventArgs e)
