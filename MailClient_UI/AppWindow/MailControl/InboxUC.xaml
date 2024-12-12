@@ -85,7 +85,8 @@
                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
                   CellStyle="{DynamicResource DataGridCellStyle1}"
                   x:Name="mailsDataGrid"
-                  Style="{DynamicResource DataGridStyle1}">
+                  Style="{DynamicResource DataGridStyle1}"
+                  SelectionChanged="mailsDataGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Header="check"
                                         CanUserResize="False"

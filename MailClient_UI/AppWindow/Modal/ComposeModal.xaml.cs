@@ -29,7 +29,6 @@ namespace MailClient_UI.AppWindow.Modal
         {
             InitializeComponent();
             Username = username;
-            Debug.WriteLine(Username);
         }
 
         private void CloseModal()

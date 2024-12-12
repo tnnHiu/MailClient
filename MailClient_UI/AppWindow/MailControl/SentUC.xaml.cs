@@ -1,5 +1,6 @@
 ﻿using MailClient_Controller.Enities;
 using MailClient_Controller.MailController;
+using MailClient_UI.AppWindow.Modal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,19 @@ namespace MailClient_UI.AppWindow.MailControl
             else
             {
                 MessageBox.Show("Không lấy được Id của mail.");
+            }
+        }
+
+        private void mailsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Mail? mailSelected = mailsDataGrid.SelectedItem as Mail;
+            if (mailSelected != null)
+            {
+                MaiLDetail mailDetail = new MaiLDetail(mailSelected.Id, Username)
+                {
+                    Owner = Window.GetWindow(this),
+                };
+                mailDetail.ShowDialog();
             }
         }
     }

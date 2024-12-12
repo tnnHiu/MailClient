@@ -107,6 +107,7 @@ namespace MailClient_Controller.MailController
             }
             return mails;
         }
+
         public MailController(string userName)
         {
             UserName = userName;
@@ -195,6 +196,16 @@ namespace MailClient_Controller.MailController
             return (SendEmailRequest(mailFromCommand) &&
                     SendEmailRequest(rcptToCommand) &&
                     SendEmailRequest(dataCommand));
+        }
+
+        public List<Mail> fetchMailDetail(int id)
+        {
+            var fetchMailDetailCommand = new
+            {
+                Command = "FETCH",
+                Mailid = id
+            };
+            return SendRequest(fetchMailDetailCommand);
         }
     }
 }

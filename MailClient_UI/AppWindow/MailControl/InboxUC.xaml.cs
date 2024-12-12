@@ -1,5 +1,6 @@
 ﻿using MailClient_Controller.Enities;
 using MailClient_Controller.MailController;
+using MailClient_UI.AppWindow.Modal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,8 +45,6 @@ namespace MailClient_UI.AppWindow.MailControl
         {
             fetchMailBox();
         }
-
-
         private void btnMoveToTrash_Click(object sender, RoutedEventArgs e)
         {
             // Lấy Button đã được bấm
@@ -57,8 +56,6 @@ namespace MailClient_UI.AppWindow.MailControl
 
                 // xác nhận xóa mail
                 MessageBoxResult result = MessageBox.Show($"Bạn có chắc chắn muốn xóa mail với mailId {mailId} này không?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-
                 // Thực hiện logic xóa mail
                 mailControler.moveToTrash(mailId);
 
@@ -70,5 +67,25 @@ namespace MailClient_UI.AppWindow.MailControl
                 MessageBox.Show("Không lấy được Id của mail.");
             }
         }
+
+        private void mailsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Mail? mailSelected = mailsDataGrid.SelectedItem as Mail;
+            if (mailSelected != null)
+            {
+                MaiLDetail mailDetail = new MaiLDetail(mailSelected.Id, Username)
+                {
+                    Owner = Window.GetWindow(this),
+                };
+                mailDetail.ShowDialog();
+            }
+        }
     }
 }
+
+
+//ComposeModal composeModal = new ComposeModal(Username)
+//{
+//    Owner = this,
+//};
+//composeModal.ShowDialog();
