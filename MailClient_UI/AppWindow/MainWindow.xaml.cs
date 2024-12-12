@@ -21,7 +21,7 @@ namespace MailClient_UI
         {
             InitializeComponent();
             Username = username;
-            LoadUserControl(new InboxUC(Username));
+            LoadUserControl(new InboxUC(Username)); 
         }
         private bool IsMaximize = false;
 
@@ -66,7 +66,7 @@ namespace MailClient_UI
 
         private void btnStarred_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void btnSent_Click(object sender, RoutedEventArgs e)
