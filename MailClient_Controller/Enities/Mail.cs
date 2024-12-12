@@ -8,7 +8,7 @@ namespace MailClient_Controller.Enities
 {
     public class Mail
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public string Sender { get; set; }
         public string Receiver { get; set; }

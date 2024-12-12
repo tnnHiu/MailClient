@@ -100,5 +100,27 @@ namespace MailClient_Controller.MailController
             };
             return SendRequest(selectCommand);
         }
+
+        public void moveToTrash(int mailId)
+        {
+            var moveCommand = new
+            {
+                Command = "DELETE",
+                Mailid = mailId
+            };
+            SendRequest(moveCommand);
+        }
+
+
+        public void restoreMail(int mailId)
+        {
+            var moveCommand = new
+            {
+                Command = "RESTORE",
+                Mailid = mailId
+            };
+            SendRequest(moveCommand);
+        }
+
     }
 }

@@ -43,6 +43,52 @@ namespace MailClient_UI.AppWindow.MailControl
         {
             fetchMailBox();
         }
+
+        private void btnMoveToTrash_Click(object sender, RoutedEventArgs e)
+        {
+            // Lấy Button đã được bấm
+            var button = sender as Button;
+
+            // Lấy Id từ CommandParameter
+            if (button?.CommandParameter is int mailId)
+            {
+
+                // xác nhận xóa mail
+                MessageBoxResult result = MessageBox.Show($"Bạn có chắc chắn muốn xóa mail với mailId {mailId} này không?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+
+                //// Thực hiện logic xóa mail
+                //mailControler.moveToTrash(mailId);
+
+                //// Refresh lại danh sách
+                //fetchMailBox();
+            }
+            else
+            {
+                MessageBox.Show("Không lấy được Id của mail.");
+            }
+        }
+
+        private void btnRestore_Click(object sender, RoutedEventArgs e)
+        {
+            // Lấy Button đã được bấm
+            var button = sender as Button;
+
+            // Lấy Id từ CommandParameter
+            if (button?.CommandParameter is int mailId)
+            {
+
+                // Thực hiện logic khôi phục mail
+                mailControler.restoreMail(mailId);
+
+                // Refresh lại danh sách
+                fetchMailBox();
+            }
+            else
+            {
+                MessageBox.Show("Không lấy được Id của mail.");
+            }
+        }
     }
 }
 

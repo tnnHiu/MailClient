@@ -110,19 +110,22 @@
                                     Width="*"
                                     Binding="{Binding CreatedAt}" />
                 <DataGridTemplateColumn Header=""
-                                        IsReadOnly="True"
-                                        Width="auto">
-                    <DataGridTemplateColumn.CellTemplate>
+                         IsReadOnly="True"                                       
+                         Width="auto">
+                <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <Button Style="{StaticResource gridEditButton}">
                                     <Icon:PackIconMaterial Kind="PencilOutline"
-                                                           Style="{StaticResource gridButtonIcon}" />
+                                            Style="{StaticResource gridButtonIcon}" />
                                 </Button>
                                 <Button Margin="5 0 0 0"
-                                        Style="{StaticResource gridRemoveButton}">
+                         Name="btnMoveToTrash"
+                         Click="btnMoveToTrash_Click"
+                         CommandParameter="{Binding Id}"
+                         Style="{StaticResource gridRemoveButton}">
                                     <Icon:PackIconMaterial Kind="DeleteOutline"
-                                                           Style="{StaticResource gridButtonIcon}" />
+                                            Style="{StaticResource gridButtonIcon}" />
                                 </Button>
                             </StackPanel>
                         </DataTemplate>

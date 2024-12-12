@@ -114,19 +114,26 @@
                                     Width="*"
                                     Binding="{Binding CreatedAt}" />
                 <DataGridTemplateColumn Header=""
-                                        IsReadOnly="True"
-                                        Width="auto">
+                         IsReadOnly="True"                                       
+                         Width="auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Button Style="{StaticResource gridEditButton}">
+                                <Button Style="{StaticResource gridEditButton}"
+                                        Name="btnRestore"
+                                        Click="btnRestore_Click"
+                                        CommandParameter="{Binding Id}">
+                                    
                                     <Icon:PackIconMaterial Kind="PencilOutline"
-                                                           Style="{StaticResource gridButtonIcon}" />
+                                            Style="{StaticResource gridButtonIcon}" />
                                 </Button>
                                 <Button Margin="5 0 0 0"
+                                        Name="btnMoveToTrash"
+                                        Click="btnMoveToTrash_Click"
+                                        CommandParameter="{Binding Id}"
                                         Style="{StaticResource gridRemoveButton}">
                                     <Icon:PackIconMaterial Kind="DeleteOutline"
-                                                           Style="{StaticResource gridButtonIcon}" />
+                                            Style="{StaticResource gridButtonIcon}" />
                                 </Button>
                             </StackPanel>
                         </DataTemplate>
