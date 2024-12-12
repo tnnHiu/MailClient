@@ -104,11 +104,11 @@
                 <DataGridTextColumn Header="Tiêu đề"
                                     IsReadOnly="True"
                                     Width="*"
-                                    Binding="{Binding Sender}" />
+                                    Binding="{Binding Subject}" />
                 <DataGridTextColumn Header="Thời Gian"
                                     IsReadOnly="True"
                                     Width="*"
-                                    Binding="{Binding Sender}" />
+                                    Binding="{Binding CreatedAt}" />
                 <DataGridTemplateColumn Header=""
                                         IsReadOnly="True"
                                         Width="auto">

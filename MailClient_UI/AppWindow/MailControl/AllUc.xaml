@@ -98,21 +98,21 @@
                     </DataGridCheckBoxColumn.HeaderTemplate>
                 </DataGridCheckBoxColumn>
                 <DataGridTextColumn Header="Từ"
-                     IsReadOnly="True"
-                     Width="*"
-                     Binding="{Binding Sender}" />
+                                    IsReadOnly="True"
+                                    Width="*"
+                                     Binding="{Binding Sender}" />
                 <DataGridTextColumn Header="Đến"
                                     IsReadOnly="True"
                                     Width="*"
-                                    Binding="{Binding Sender}" />
+                                    Binding="{Binding Receiver}" />
                 <DataGridTextColumn Header="Tiêu đề"
                                     IsReadOnly="True"
                                     Width="*"
-                                    Binding="{Binding Sender}" />
+                                    Binding="{Binding Subject}" />
                 <DataGridTextColumn Header="Thời Gian"
                                     IsReadOnly="True"
                                     Width="*"
-                                    Binding="{Binding Sender}" />
+                                    Binding="{Binding CreatedAt}" />
                 <DataGridTemplateColumn Header=""
                                         IsReadOnly="True"
                                         Width="auto">
