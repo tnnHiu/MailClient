@@ -129,7 +129,7 @@
                   Margin="30 20 20 20">
                 <ContentControl Name="userControl" />
             </Grid>
-
         </Grid>
     </Border>
 </Window>
+

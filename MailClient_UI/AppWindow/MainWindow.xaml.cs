@@ -3,7 +3,9 @@ using MailClient_Controller.Enities;
 using MailClient_Controller.MailController;
 using MailClient_Controller.Service;
 using MailClient_UI.AppWindow.MailControl;
+using MailClient_UI.AppWindow.Modal;
 using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,7 +23,7 @@ namespace MailClient_UI
         {
             InitializeComponent();
             Username = username;
-            LoadUserControl(new InboxUC(Username)); 
+            LoadUserControl(new InboxUC(Username));
         }
         private bool IsMaximize = false;
 
@@ -56,9 +58,12 @@ namespace MailClient_UI
 
         private void btnCompose_Click(object sender, RoutedEventArgs e)
         {
-            LoadUserControl(new ComposeUC(Username));
+            ComposeModal composeModal = new ComposeModal(Username)
+            {
+                Owner = this,
+            };
+            composeModal.ShowDialog();
         }
-
         private void btnInbox_Click(object sender, RoutedEventArgs e)
         {
             LoadUserControl(new InboxUC(Username));
@@ -68,7 +73,6 @@ namespace MailClient_UI
         {
 
         }
-
         private void btnSent_Click(object sender, RoutedEventArgs e)
         {
             LoadUserControl(new SentUC(Username));

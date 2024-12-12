@@ -17,9 +17,7 @@ namespace MailClient_UI
             {
                 string serverIp = "192.168.1.16";
                 IMAPService.Instance.Initialize(serverIp);
-
                 SMTPService.Instance.Initialize(serverIp);
-
                 FTPService.Instacnce.Initialize(serverIp);
             }
             catch (Exception ex)

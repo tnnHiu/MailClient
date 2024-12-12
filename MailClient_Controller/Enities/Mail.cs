@@ -8,7 +8,7 @@ namespace MailClient_Controller.Enities
 {
     public class Mail
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public string Sender { get; set; }
         public string Receiver { get; set; }
@@ -22,12 +22,19 @@ namespace MailClient_Controller.Enities
 
         // Default Constructor
 
-        public Mail(int id, string sender, string subject, DateTime createAt)
+        public Mail( string sender,string receiver, string subject, string content)
         {
-            Id = id;
+            Id = 0;
+            CreatedAt = DateTime.Now;
             Sender = sender;
-            Receiver = subject;
-            CreatedAt = createAt;
+            Receiver = receiver;
+            Reply = 0;
+            Owner = string.Empty;
+            IsRead = false;
+            Attachment = string.Empty;
+            Subject = subject;
+            Content = content;
+            DeletedAt = null;
         }
         public Mail()
         {

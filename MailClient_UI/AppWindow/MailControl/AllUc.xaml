@@ -98,9 +98,9 @@
                     </DataGridCheckBoxColumn.HeaderTemplate>
                 </DataGridCheckBoxColumn>
                 <DataGridTextColumn Header="Từ"
-                     IsReadOnly="True"
-                     Width="*"
-                     Binding="{Binding Sender}" />
+                                    IsReadOnly="True"
+                                    Width="*"
+                                    Binding="{Binding Sender}" />
                 <DataGridTextColumn Header="Đến"
                                     IsReadOnly="True"
                                     Width="*"
