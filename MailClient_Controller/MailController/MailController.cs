@@ -69,5 +69,36 @@ namespace MailClient_Controller.MailController
             };
             return SendRequest(selectCommand);
         }
+
+        public List<Mail> fetchSentMail()
+        {
+            var selectCommand = new
+            {
+                Command = "SELECT",
+                Mailbox = "SENT"
+            };
+            return SendRequest(selectCommand);
+        }
+
+
+        public List<Mail> fetchtTrashMail()
+        {
+            var selectCommand = new
+            {
+                Command = "SELECT",
+                Mailbox = "TRASH"
+            };
+            return SendRequest(selectCommand);
+        }
+
+        public List<Mail> fetchAllMail()
+        {
+            var selectCommand = new
+            {
+                Command = "SELECT",
+                Mailbox = "ALL"
+            };
+            return SendRequest(selectCommand);
+        }
     }
 }

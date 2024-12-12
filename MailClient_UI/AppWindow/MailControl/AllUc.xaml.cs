@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MailClient_Controller.Enities;
+using MailClient_Controller.MailController;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,11 +20,29 @@ namespace MailClient_UI.AppWindow.MailControl
     /// <summary>
     /// Interaction logic for AllUc.xaml
     /// </summary>
-    public partial class AllUc : UserControl
+    public partial class AllUC : UserControl
     {
-        public AllUc()
+        private MailController mailControler;
+        private List<Mail> mailList;
+        public string Username { get; set; }
+        public AllUC(string username)
         {
             InitializeComponent();
+            Username = username;
+            fetchMailBox();
+        }
+
+        private void fetchMailBox()
+        {
+            mailControler = new MailController(Username);
+            mailList = mailControler.fetchAllMail();
+            mailsDataGrid.ItemsSource = mailList;
+        }
+
+        private void btnReload_Click(object sender, RoutedEventArgs e)
+        {
+            fetchMailBox();
         }
     }
 }
+

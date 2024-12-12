@@ -71,17 +71,17 @@ namespace MailClient_UI
 
         private void btnSent_Click(object sender, RoutedEventArgs e)
         {
-
+            LoadUserControl(new SentUC(Username));
         }
 
         private void btnTrash_Click(object sender, RoutedEventArgs e)
         {
-
+            LoadUserControl(new TrashUC(Username));
         }
 
         private void btnAll_Click(object sender, RoutedEventArgs e)
         {
-
+            LoadUserControl(new AllUC(Username));
         }
 
         private void btnSignOut_Click(object sender, RoutedEventArgs e)

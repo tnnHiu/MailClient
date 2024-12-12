@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MailClient_Controller.Enities;
+using MailClient_Controller.MailController;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,27 @@ namespace MailClient_UI.AppWindow.MailControl
     /// </summary>
     public partial class SentUC : UserControl
     {
-        public SentUC()
+
+        private MailController mailControler;
+        private List<Mail> mailList;
+        public string Username { get; set; }
+        public SentUC(string username)
         {
             InitializeComponent();
+            Username = username;
+            fetchMailBox();
+        }
+
+        private void fetchMailBox()
+        {
+            mailControler = new MailController(Username);
+            mailList = mailControler.fetchSentMail();
+            mailsDataGrid.ItemsSource = mailList;
+        }
+
+        private void btnReload_Click(object sender, RoutedEventArgs e)
+        {
+            fetchMailBox();
         }
     }
 }
