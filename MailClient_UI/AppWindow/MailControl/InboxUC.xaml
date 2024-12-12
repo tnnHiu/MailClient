@@ -104,13 +104,17 @@
                 <DataGridTextColumn Header="Tiêu đề"
                                     IsReadOnly="True"
                                     Width="*"
-                                    Binding="{Binding Sender}" />
+                                    Binding="{Binding Subject}" />
                 <DataGridTextColumn Header="Thời Gian"
                                     IsReadOnly="True"
                                     Width="*"
-                                    Binding="{Binding Sender}" />
+                                    Binding="{Binding CreatedAt}" />
+                <!--<DataGridTextColumn Header="ID"
+                                    IsReadOnly="True"
+                                    Width="*"
+                                    Binding="{Binding Id}" />-->
                 <DataGridTemplateColumn Header=""
-                                        IsReadOnly="True"
+                                        IsReadOnly="True"                                       
                                         Width="auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -120,6 +124,9 @@
                                                            Style="{StaticResource gridButtonIcon}" />
                                 </Button>
                                 <Button Margin="5 0 0 0"
+                                        Name="btnMoveToTrash"
+                                        Click="btnMoveToTrash_Click"
+                                        CommandParameter="{Binding Id}"
                                         Style="{StaticResource gridRemoveButton}">
                                     <Icon:PackIconMaterial Kind="DeleteOutline"
                                                            Style="{StaticResource gridButtonIcon}" />

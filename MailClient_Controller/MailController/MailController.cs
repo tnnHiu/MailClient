@@ -67,7 +67,10 @@ namespace MailClient_Controller.MailController
         {
             List<Mail> mails = new List<Mail>();
             TcpClient client = imapService._client;
-
+            if (client == null || !client.Connected)
+            {
+                client = imapService._client;
+            }
             NetworkStream stream = null;
             StreamReader reader = null;
             StreamWriter writer = null;
@@ -149,7 +152,26 @@ namespace MailClient_Controller.MailController
             };
             return SendRequest(selectCommand);
         }
+        public void moveToTrash(int mailId)
+        {
+            var moveCommand = new
+            {
+                Command = "DELETE",
+                Mailid = mailId
+            };
+            SendRequest(moveCommand);
+        }
 
+
+        public void restoreMail(int mailId)
+        {
+            var moveCommand = new
+            {
+                Command = "RESTORE",
+                Mailid = mailId
+            };
+            SendRequest(moveCommand);
+        }
         public bool SendEmail(Mail mail)
         {
             var mailFromCommand = new
