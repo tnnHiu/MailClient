@@ -23,7 +23,7 @@ namespace MailClient_Controller.Enities
         // Default Constructor
 
 
-
+        // Constructor for send reply mail
         public Mail( int id,string sender, string receiver, string subject, string content)
         {
             Id = id;
@@ -39,6 +39,24 @@ namespace MailClient_Controller.Enities
             DeletedAt = null;
         }
 
+        // Constructor for send forward mail
+        public Mail(int id, string sender, string receiver)
+        {
+            Id = id;
+            CreatedAt = DateTime.Now;
+            Sender = sender;
+            Receiver = receiver;
+            Reply = 0;
+            Owner = string.Empty;
+            IsRead = false;
+            Attachment = string.Empty;
+            Subject = string.Empty;
+            Content = string.Empty;
+            DeletedAt = null;
+        }
+
+
+        // Constructor for send normail mail
         public Mail( string sender,string receiver, string subject, string content)
         {
             Id = 0;

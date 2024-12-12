@@ -230,6 +230,40 @@ namespace MailClient_Controller.MailController
                    SendEmailRequest(replyCommand) &&
                    SendEmailRequest(dataCommand));
         }
+
+
+        public bool ForwardEmail(Mail mail)
+        {
+            var mailFromCommand = new
+            {
+                Command = "FORWARD FROM",
+                Email = mail.Sender
+            };
+
+            var rcptToCommand = new
+            {
+                Command = "FORWARD TO",
+                Email = mail.Receiver
+            };
+
+            var mailForwardCommand = new
+            {
+                Command = "MAIL FORWARD",
+                Mailid = mail.Id,
+            };
+            //var quitCommand = new
+            //{
+            //    Command = "QUIT"
+            //};
+
+
+            return (SendEmailRequest(mailFromCommand) &&
+                   SendEmailRequest(rcptToCommand) &&
+                   SendEmailRequest(mailForwardCommand));
+
+        }
+
+
         public List<Mail> fetchMailDetail(int id)
         {
             var fetchMailDetailCommand = new

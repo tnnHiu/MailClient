@@ -91,7 +91,16 @@ namespace MailClient_UI.AppWindow.Modal
 
         private void btnForward_Click(object sender, RoutedEventArgs e)
         {
-
+            Mail mail = mails.First();
+            if (mail != null)
+            {
+                ForwardModal forwardModal = new ForwardModal(mail, UserName)
+                {
+                    Owner = this,
+                };
+                forwardModal.ShowDialog();
+                CloseModal();
+            }
         }
     }
 }
