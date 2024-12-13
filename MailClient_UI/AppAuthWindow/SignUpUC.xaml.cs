@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MailClient_UI.AuthWindow
+namespace MailClient_UI.AppAuthWindow
 {
     /// <summary>
     /// Interaction logic for SignUpUC.xaml
@@ -98,9 +98,15 @@ namespace MailClient_UI.AuthWindow
 
         private void btnToSignIn_Click(object sender, RoutedEventArgs e)
         {
+            //SignInUC signInUC = new SignInUC();
+            //AuthWindow authWindow = (AuthWindow)Application.Current.MainWindow;
+            //authWindow.mainContentControl.Content = signInUC;
             SignInUC signInUC = new SignInUC();
-            AuthWindow authWindow = (AuthWindow)Application.Current.MainWindow;
-            authWindow.mainContentControl.Content = signInUC;
+            AuthWindow authWindow = Window.GetWindow(this) as AuthWindow;
+            if (authWindow != null)
+            {
+                authWindow.mainContentControl.Content = signInUC;
+            }
         }
 
         private void btnSignUp_Click(object sender, RoutedEventArgs e)
@@ -110,13 +116,21 @@ namespace MailClient_UI.AuthWindow
             string password = txtPassword.Password;
             if (authController.SignUp(username, fullname, password))
             {
-                //MainWindow mainWindow = new MainWindow(username);
-                //mainWindow.Show();
-                //Window thisWindow = Window.GetWindow(this);
-                //thisWindow.Close();
-                SignInUC signInUC = new SignInUC();
-                AuthWindow authWindow = (AuthWindow)Application.Current.MainWindow;
-                authWindow.mainContentControl.Content = signInUC;
+                try
+                {
+                    MainWindow mainWindow = new MainWindow(username);
+                    mainWindow.Show();
+                    Window thisWindow = Window.GetWindow(this);
+                    thisWindow.Close();
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"BtnSignIn {ex}");
+                }
+                //SignInUC signInUC = new SignInUC();
+                ////AuthWindow authWindow = (AuthWindow)Application.Current.MainWindow;
+                ////authWindow.mainContentControl.Content = signInUC;
             }
             else
             {

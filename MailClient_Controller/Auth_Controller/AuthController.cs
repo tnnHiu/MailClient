@@ -8,6 +8,9 @@ namespace MailClient_Controller.Auth_Controller
     {
         IMAPService iMAPService = IMAPService.Instance;
 
+
+
+        
         private bool SendRequest(object command)
         {
             NetworkStream stream = null;

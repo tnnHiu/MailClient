@@ -1,10 +1,10 @@
 ﻿using MailClient_Controller.Auth_Controller;
-using System.Data;
+
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace MailClient_UI.AuthWindow
+namespace MailClient_UI.AppAuthWindow
 {
     /// <summary>
     /// Interaction logic for SignInUC.xaml
@@ -52,9 +52,18 @@ namespace MailClient_UI.AuthWindow
         }
         private void btnToSignUp_Click(object sender, RoutedEventArgs e)
         {
+            //SignUpUC signUpUC = new SignUpUC();
+            //AuthWindow authWindow = (AuthWindow)Application.Current.MainWindow;
+            //authWindow.mainContentControl.Content = signUpUC;
+
             SignUpUC signUpUC = new SignUpUC();
-            AuthWindow authWindow = (AuthWindow)Application.Current.MainWindow;
-            authWindow.mainContentControl.Content = signUpUC;
+            AuthWindow authWindow = Window.GetWindow(this) as AuthWindow;
+            if (authWindow != null)
+            {
+                authWindow.mainContentControl.Content = signUpUC;
+            }
+
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

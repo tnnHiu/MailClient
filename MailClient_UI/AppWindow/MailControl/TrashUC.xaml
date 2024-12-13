@@ -60,7 +60,7 @@
                    Margin="0 20 0 0"
                    Foreground="#121518"
                    HorizontalAlignment="Left"><Run Language="vi-vn"
-                                                   Text="Mail" /><LineBreak /><Run Language="vi-vn" /></TextBlock>
+                                                   Text="Thư Rác" /><LineBreak /><Run Language="vi-vn" /></TextBlock>
 
         <!--Add Button-->
         <Button Name="btnReload"
@@ -86,7 +86,7 @@
                   CellStyle="{DynamicResource DataGridCellStyle1}"
                   x:Name="mailsDataGrid"
                   Style="{DynamicResource DataGridStyle1}"
-                  SelectionChanged="mailsDataGrid_SelectionChanged">
+                  >
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Header="check"
                                         CanUserResize="False"
@@ -125,7 +125,7 @@
                                         Click="btnRestore_Click"
                                         CommandParameter="{Binding Id}">
                                     
-                                    <Icon:PackIconMaterial Kind="PencilOutline"
+                                    <Icon:PackIconMaterial Kind="Restore"
                                             Style="{StaticResource gridButtonIcon}" />
                                 </Button>
                                 <Button Margin="5 0 0 0"

@@ -60,7 +60,7 @@
                    Margin="0 20 0 0"
                    Foreground="#121518"
                    HorizontalAlignment="Left"><Run Language="vi-vn"
-                                                   Text="Mail" /><LineBreak /><Run Language="vi-vn" /></TextBlock>
+                                                   Text="Tất Cả Thư" /><LineBreak /><Run Language="vi-vn" /></TextBlock>
 
         <!--Add Button-->
         <Button Name="btnReload"
@@ -85,8 +85,7 @@
                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
                   CellStyle="{DynamicResource DataGridCellStyle1}"
                   x:Name="mailsDataGrid"
-                  Style="{DynamicResource DataGridStyle1}"
-                  SelectionChanged="mailsDataGrid_SelectionChanged">
+                  Style="{DynamicResource DataGridStyle1}">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Header="check"
                                         CanUserResize="False"
@@ -120,8 +119,11 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Button Style="{StaticResource gridEditButton}">
-                                    <Icon:PackIconMaterial Kind="PencilOutline"
+                                <Button Name="btnRead"
+                                        Click="btnRead_Click"
+                                        CommandParameter="{Binding Id}"
+                                        Style="{StaticResource gridEditButton}">
+                                    <Icon:PackIconMaterial Kind="Eye"
                                             Style="{StaticResource gridButtonIcon}" />
                                 </Button>
                                 <Button Margin="5 0 0 0"

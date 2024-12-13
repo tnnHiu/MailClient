@@ -54,16 +54,21 @@ namespace MailClient_UI.AppWindow.MailControl
             // Lấy Id từ CommandParameter
             if (button?.CommandParameter is int mailId)
             {
-
-                // xác nhận xóa mail
+                // Xác nhận xóa mail
                 MessageBoxResult result = MessageBox.Show($"Bạn có chắc chắn muốn xóa mail với mailId {mailId} này không?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Thực hiện logic xóa mail
+                    mailControler.moveToTrash(mailId);
 
-
-                // Thực hiện logic xóa mail
-                mailControler.moveToTrash(mailId);
-
-                // Refresh lại danh sách
-                fetchMailBox();
+                    // Refresh lại danh sách
+                    fetchMailBox();
+                }
+                else
+                {
+                    // Hủy sự kiện nếu người dùng chọn "No"
+                    return;
+                }
             }
             else
             {
@@ -71,16 +76,38 @@ namespace MailClient_UI.AppWindow.MailControl
             }
         }
 
-        private void mailsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //private void mailsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    Mail? mailSelected = mailsDataGrid.SelectedItem as Mail;
+        //    if (mailSelected != null)
+        //    {
+        //        MaiLDetail mailDetail = new MaiLDetail(mailSelected.Id, Username)
+        //        {
+        //            Owner = Window.GetWindow(this),
+        //        };
+        //        mailDetail.ShowDialog();
+        //    }
+        //}
+
+        private void btnRead_Click(object sender, RoutedEventArgs e)
         {
-            Mail? mailSelected = mailsDataGrid.SelectedItem as Mail;
-            if (mailSelected != null)
+            // Lấy Button đã được bấm
+            var button = sender as Button;
+
+            // Lấy Id từ CommandParameter
+            if (button?.CommandParameter is int mailId)
             {
-                MaiLDetail mailDetail = new MaiLDetail(mailSelected.Id, Username)
+
+                MaiLDetail mailDetail = new MaiLDetail(mailId, Username)
                 {
                     Owner = Window.GetWindow(this),
                 };
                 mailDetail.ShowDialog();
+
+            }
+            else
+            {
+                MessageBox.Show("Không lấy được Id của mail.");
             }
         }
     }

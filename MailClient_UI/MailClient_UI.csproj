@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MainAuthWindow\**" />
+    <EmbeddedResource Remove="MainAuthWindow\**" />
+    <None Remove="MainAuthWindow\**" />
+    <Page Remove="MainAuthWindow\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Resource\Images\" />
   </ItemGroup>
 

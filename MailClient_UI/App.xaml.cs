@@ -1,8 +1,5 @@
 ﻿using MailClient_Controller.Auth_Controller;
 using MailClient_Controller.Service;
-using System.Configuration;
-using System.Data;
-using System.DirectoryServices.ActiveDirectory;
 using System.Windows;
 
 namespace MailClient_UI

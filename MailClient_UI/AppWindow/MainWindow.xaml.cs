@@ -1,15 +1,13 @@
 ﻿
 using MailClient_Controller.Enities;
 using MailClient_Controller.MailController;
-using MailClient_Controller.Service;
+using MailClient_UI.AppAuthWindow;
 using MailClient_UI.AppWindow.MailControl;
 using MailClient_UI.AppWindow.Modal;
-using System.Diagnostics;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Markup;
+
 
 namespace MailClient_UI
 {
@@ -90,7 +88,9 @@ namespace MailClient_UI
 
         private void btnSignOut_Click(object sender, RoutedEventArgs e)
         {
-
+            AuthWindow authWindow = new AuthWindow();
+            authWindow.Show();
+            this.Close();
         }
 
         private void LoadUserControl(UserControl userControl)

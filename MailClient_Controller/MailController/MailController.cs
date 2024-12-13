@@ -111,7 +111,7 @@ namespace MailClient_Controller.MailController
                 using StreamReader reader = new StreamReader(stream, Encoding.UTF8);
                 using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
 
-                // Gửi lệnh FTP
+      
                 var ftpCommand = new
                 {
                     Command = "FTP",
@@ -120,7 +120,7 @@ namespace MailClient_Controller.MailController
                 };
                 if (!SendCommandAndCheckResponse(writer, reader, ftpCommand)) return false;
 
-                // Gửi lệnh PUT
+         
                 var putCommand = new
                 {
                     Command = "PUT",
@@ -129,7 +129,7 @@ namespace MailClient_Controller.MailController
                 };
                 if (!SendCommandAndCheckResponse(writer, reader, putCommand)) return false;
 
-                // Gửi file đến server
+  
                 SendFileData(stream);
 
                 // Nhận phản hồi từ server
