@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MailClient_Controller.Enities;
+using MailClient_Controller.MailController;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,14 +21,45 @@ namespace MailClient_UI.AppWindow.Modal
     /// </summary>
     public partial class ForwardModal : Window
     {
-        public ForwardModal()
+
+        MailController mailController;
+
+        public Mail MailForward { get; set; }
+        public string UserName { get; set; }
+
+        public ForwardModal(Mail mail, string username)
         {
             InitializeComponent();
+            MailForward = mail;
+            UserName = username;
+            ShowMailForwardProperty();
         }
+
+        private void ShowMailForwardProperty()
+        {
+            txtContent.Text = MailForward.Content;
+            txtSubject.Text = MailForward.Subject;
+
+        }
+
 
         private void btnSendForward_Click(object sender, RoutedEventArgs e)
         {
+            int id = MailForward.Id;
+            string userEmail = UserName + "@vku.udn.vn";
+            string receiver = txtTo.Text;
 
+
+            Mail mailForward = new Mail(id, userEmail, receiver);
+            mailController = new MailController(UserName);
+            if (mailController.ForwardEmail(mailForward))
+            {
+                CloseModal();
+            }
+            else
+            {
+                MessageBox.Show("Err");
+            }
         }
 
         private void btnAttach_Click(object sender, RoutedEventArgs e)
