@@ -18,7 +18,7 @@ namespace MailClient_UI
                 string serverIp = "192.168.1.16";
                 IMAPService.Instance.Initialize(serverIp);
                 SMTPService.Instance.Initialize(serverIp);
-                FTPService.Instacnce.Initialize(serverIp);
+                FTPService.Instance.Initialize(serverIp);
             }
             catch (Exception ex)
             {
@@ -32,7 +32,7 @@ namespace MailClient_UI
             {
                 IMAPService.Instance.StopService();
                 SMTPService.Instance.StopService();
-                FTPService.Instacnce.StopService();
+                FTPService.Instance.StopService();
             }
             catch (Exception ex)
             {

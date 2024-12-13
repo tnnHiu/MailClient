@@ -1,8 +1,10 @@
 ﻿using MailClient_Controller.Enities;
 using MailClient_Controller.Service;
 using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
 using System.Net.Sockets;
+using System.Security.Principal;
 using System.Text;
 
 namespace MailClient_Controller.MailController
@@ -10,8 +12,182 @@ namespace MailClient_Controller.MailController
     public class MailController
     {
         public string UserName { get; set; }
+        public string FilePath { get; set; }
+
+        public string ResponseIdentify { get; set; }
         private readonly IMAPService imapService = IMAPService.Instance;
         private readonly SMTPService smtpService = SMTPService.Instance;
+        private readonly FTPService fTPService = FTPService.Instance;
+
+        public MailController(string Username, string filePath)
+        {
+            UserName = Username;
+            FilePath = filePath;
+        }
+
+        public MailController(string userName)
+        {
+            UserName = userName;
+        }
+
+        //public bool SendFile(Mail mail)
+        //{
+        //    NetworkStream stream = null;
+        //    StreamReader reader = null;
+        //    StreamWriter writer = null;
+        //    try
+        //    {
+        //        stream = fTPService._client.GetStream();
+        //        if (stream == null) return false;
+        //        reader = new StreamReader(stream, Encoding.UTF8);
+        //        writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
+
+        //        var ftpCommand = new
+        //        {
+        //            Command = "FTP",
+        //            Sender = mail.Sender,
+        //            Recipient = mail.Receiver,
+        //        };
+
+        //        string jsonCommand = JsonConvert.SerializeObject(ftpCommand);
+        //        writer.WriteLine(jsonCommand);
+        //        string response = reader.ReadLine();
+
+
+        //        var putCommand = new
+        //        {
+        //            Command = "PUT",
+        //            Identify = ResponseIdentify,
+        //            Filename = System.IO.Path.GetFileName(FilePath),
+        //        };
+
+        //        jsonCommand = JsonConvert.SerializeObject(ftpCommand);
+        //        writer.WriteLine(jsonCommand);
+        //        response = reader.ReadLine();
+
+
+        //        using FileStream fileStream = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
+        //        byte[] buffer = new byte[64 * 1024];
+        //        int bytesRead;
+
+        //        while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
+        //        {
+        //            stream.Write(buffer, 0, bytesRead);
+        //        }
+        //        stream.Flush();
+
+
+        //        response = reader.ReadLine();
+        //        if (response != null)
+        //        {
+        //            ServerResponse serverResponse = ServerResponse.FromJson(response);
+        //            if (serverResponse.Status.Contains("OK"))
+        //            {
+        //                Debug.WriteLine($"true {jsonCommand}");
+        //                return true;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine($"Error in SendFile: {ex.Message}");
+        //    }
+        //    return false;
+        //}
+
+
+
+
+        public bool SendFile(Mail mail)
+        {
+            try
+            {
+                using NetworkStream stream = fTPService._client.GetStream();
+                if (stream == null) return false;
+
+                //stream.ReadTimeout = 10000; 
+                //stream.WriteTimeout = 10000; 
+
+                using StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+                using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
+
+                // Gửi lệnh FTP
+                var ftpCommand = new
+                {
+                    Command = "FTP",
+                    Sender = mail.Sender,
+                    Recipient = mail.Receiver,
+                };
+                if (!SendCommandAndCheckResponse(writer, reader, ftpCommand)) return false;
+
+                // Gửi lệnh PUT
+                var putCommand = new
+                {
+                    Command = "PUT",
+                    Identify = ResponseIdentify,
+                    Filename = Path.GetFileName(FilePath),
+                };
+                if (!SendCommandAndCheckResponse(writer, reader, putCommand)) return false;
+
+                // Gửi file đến server
+                SendFileData(stream);
+
+                // Nhận phản hồi từ server
+                string response = reader.ReadLine();
+                if (response != null && ServerResponse.FromJson(response).Status.Contains("OK"))
+                {
+                    Debug.WriteLine("File sent successfully");
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in SendFile: {ex.Message}");
+            }
+            return false;
+        }
+
+        private bool SendCommandAndCheckResponse(StreamWriter writer, StreamReader reader, object command)
+        {
+            try
+            {
+                string jsonCommand = JsonConvert.SerializeObject(command);
+                writer.WriteLine(jsonCommand);
+
+                string response = reader.ReadLine();
+                if (response == null) return false;
+
+                ServerResponse serverResponse = ServerResponse.FromJson(response);
+                return serverResponse.Status.Contains("OK");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in SendCommandAndCheckResponse: {ex.Message}");
+                return false;
+            }
+        }
+
+        private void SendFileData(NetworkStream stream)
+        {
+            try
+            {
+                using FileStream fileStream = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
+                byte[] buffer = new byte[64 * 1024]; 
+                int bytesRead;
+
+                while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    stream.Write(buffer, 0, bytesRead);
+                }
+                stream.Flush();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in SendFileData: {ex.Message}");
+            }
+        }
+
+
 
 
         private bool SendEmailRequest(object command)
@@ -41,9 +217,14 @@ namespace MailClient_Controller.MailController
                         {
                             ServerResponse serverResponse = ServerResponse.FromJson(response);
                             Debug.WriteLine($"Server resplonse {serverResponse.Status}");
-                            if (serverResponse.Status.Contains("OK"))
+                            if (serverResponse.Status.Contains("OK") && (string.IsNullOrEmpty(serverResponse.Identify)))
                             {
                                 Debug.WriteLine($"true {jsonCommand}");
+                                return true;
+                            }
+                            else if (serverResponse.Status.Contains("OK") && (!string.IsNullOrEmpty(serverResponse.Identify)))
+                            {
+                                ResponseIdentify = serverResponse.Identify;
                                 return true;
                             }
                             else
@@ -57,9 +238,8 @@ namespace MailClient_Controller.MailController
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in SendRequest: {ex.Message}");
+                Debug.WriteLine($"Error in SendRequest: {ex.Message}");
             }
-
             return false;
         }
 
@@ -107,12 +287,6 @@ namespace MailClient_Controller.MailController
             }
             return mails;
         }
-
-        public MailController(string userName)
-        {
-            UserName = userName;
-        }
-
         public List<Mail> fetchMail()
         {
             var selectCommand = new
@@ -173,7 +347,9 @@ namespace MailClient_Controller.MailController
             };
             SendRequest(moveCommand);
         }
-        public bool SendEmail(Mail mail)
+
+
+        public bool SendMailWithAttach(Mail mail)
         {
             var mailFromCommand = new
             {
@@ -187,6 +363,37 @@ namespace MailClient_Controller.MailController
                 Email = mail.Receiver
             };
 
+            var attachCommand = new
+            {
+                Command = "ATTACH",
+                Filename = mail.Attachment,
+            };
+
+            var dataCommand = new
+            {
+                Command = "DATA",
+                Subject = mail.Subject,
+                Content = mail.Content
+            };
+            return (SendEmailRequest(mailFromCommand) &&
+                    SendEmailRequest(rcptToCommand) &&
+                    SendEmailRequest(attachCommand) &&
+                    SendEmailRequest(dataCommand));
+        }
+
+        public bool SendEmail(Mail mail)
+        {
+            var mailFromCommand = new
+            {
+                Command = "MAIL FROM",
+                Email = mail.Sender
+            };
+
+            var rcptToCommand = new
+            {
+                Command = "RCPT TO",
+                Email = mail.Receiver
+            };
             var dataCommand = new
             {
                 Command = "DATA",
@@ -241,3 +448,9 @@ namespace MailClient_Controller.MailController
         }
     }
 }
+
+
+
+
+
+

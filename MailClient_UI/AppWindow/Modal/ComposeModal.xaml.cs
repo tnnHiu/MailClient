@@ -25,6 +25,7 @@ namespace MailClient_UI.AppWindow.Modal
 
         MailController mailController;
         public string Username { get; set; }
+        private string filePath;
         public ComposeModal(string username)
         {
             InitializeComponent();
@@ -47,20 +48,54 @@ namespace MailClient_UI.AppWindow.Modal
             string receiver = txtTo.Text;
             string subject = txtSubject.Text;
             string content = txtContent.Text;
-            Mail mail = new Mail(username, receiver, subject, content);
-            mailController = new MailController(Username);
-            if (mailController.SendEmail(mail))
+
+
+            if (txtAttach.Text == null)
             {
-                CloseModal();
+                Mail mail = new Mail(username, receiver, subject, content);
+                mailController = new MailController(Username);
+                if (mailController.SendEmail(mail))
+                {
+                    CloseModal();
+                }
+                else
+                {
+                    MessageBox.Show("Err");
+                }
             }
             else
             {
-                MessageBox.Show("Err");
+                string attachemnt = txtAttach.Text;
+                Mail mail = new Mail(username, receiver, subject, content, attachemnt);
+                mailController = new MailController(Username, filePath);
+                if (mailController.SendMailWithAttach(mail))
+                {
+                    if (mailController.SendFile(mail))
+                    {
+                        CloseModal();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Err null iden");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Err");
+                }
             }
         }
         private void btnAttach_Click(object sender, RoutedEventArgs e)
         {
-
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            Nullable<bool> result = openFileDialog.ShowDialog();
+            if (result != null)
+            {
+                attachRow.Visibility = Visibility.Visible;
+                filePath = openFileDialog.FileName;
+                string fileName = System.IO.Path.GetFileName(filePath);
+                txtAttach.Text = fileName;
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace MailClient_Controller.Service
         private FTPService() { }
 
         // Singleton Instance property.
-        public static FTPService Instacnce => _instance.Value;
+        public static FTPService Instance => _instance.Value;
 
         public void Initialize(string serverIp)
         {

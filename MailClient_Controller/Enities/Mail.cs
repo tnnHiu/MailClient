@@ -39,6 +39,21 @@ namespace MailClient_Controller.Enities
             DeletedAt = null;
         }
 
+        public Mail(string sender, string receiver, string subject, string content, string attachment)
+        {
+            Id = 0;
+            CreatedAt = DateTime.Now;
+            Sender = sender;
+            Receiver = receiver;
+            Reply = 0;
+            Owner = string.Empty;
+            IsRead = false;
+            Attachment = attachment;
+            Subject = subject;
+            Content = content;
+            DeletedAt = null;
+        }
+
         public Mail( string sender,string receiver, string subject, string content)
         {
             Id = 0;
@@ -53,6 +68,7 @@ namespace MailClient_Controller.Enities
             Content = content;
             DeletedAt = null;
         }
+
         public Mail()
         {
             Id = 0;
