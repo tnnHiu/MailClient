@@ -29,123 +29,89 @@ namespace MailClient_Controller.MailController
         {
             UserName = userName;
         }
-
-        //public bool SendFile(Mail mail)
-        //{
-        //    NetworkStream stream = null;
-        //    StreamReader reader = null;
-        //    StreamWriter writer = null;
-        //    try
-        //    {
-        //        stream = fTPService._client.GetStream();
-        //        if (stream == null) return false;
-        //        reader = new StreamReader(stream, Encoding.UTF8);
-        //        writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
-
-        //        var ftpCommand = new
-        //        {
-        //            Command = "FTP",
-        //            Sender = mail.Sender,
-        //            Recipient = mail.Receiver,
-        //        };
-
-        //        string jsonCommand = JsonConvert.SerializeObject(ftpCommand);
-        //        writer.WriteLine(jsonCommand);
-        //        string response = reader.ReadLine();
-
-
-        //        var putCommand = new
-        //        {
-        //            Command = "PUT",
-        //            Identify = ResponseIdentify,
-        //            Filename = System.IO.Path.GetFileName(FilePath),
-        //        };
-
-        //        jsonCommand = JsonConvert.SerializeObject(ftpCommand);
-        //        writer.WriteLine(jsonCommand);
-        //        response = reader.ReadLine();
-
-
-        //        using FileStream fileStream = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
-        //        byte[] buffer = new byte[64 * 1024];
-        //        int bytesRead;
-
-        //        while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
-        //        {
-        //            stream.Write(buffer, 0, bytesRead);
-        //        }
-        //        stream.Flush();
-
-
-        //        response = reader.ReadLine();
-        //        if (response != null)
-        //        {
-        //            ServerResponse serverResponse = ServerResponse.FromJson(response);
-        //            if (serverResponse.Status.Contains("OK"))
-        //            {
-        //                Debug.WriteLine($"true {jsonCommand}");
-        //                return true;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine($"Error in SendFile: {ex.Message}");
-        //    }
-        //    return false;
-        //}
-
-
-
-
         public bool SendFile(Mail mail)
         {
+            NetworkStream stream = null;
+            StreamReader reader = null;
+            StreamWriter writer = null;
+
             try
             {
-                using NetworkStream stream = fTPService._client.GetStream();
+                stream = fTPService._client.GetStream();
                 if (stream == null) return false;
 
-                //stream.ReadTimeout = 10000; 
-                //stream.WriteTimeout = 10000; 
+                reader = new StreamReader(stream, Encoding.UTF8);
+                writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
 
-                using StreamReader reader = new StreamReader(stream, Encoding.UTF8);
-                using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
-
-      
+                // Gửi lệnh FTP ban đầu
                 var ftpCommand = new
                 {
                     Command = "FTP",
                     Sender = mail.Sender,
-                    Recipient = mail.Receiver,
+                    Recipient = mail.Receiver
                 };
                 if (!SendCommandAndCheckResponse(writer, reader, ftpCommand)) return false;
 
-         
+                // Gửi lệnh PUT để thông báo gửi file
                 var putCommand = new
                 {
                     Command = "PUT",
                     Identify = ResponseIdentify,
-                    Filename = Path.GetFileName(FilePath),
+                    Filename = Path.GetFileName(FilePath)
                 };
                 if (!SendCommandAndCheckResponse(writer, reader, putCommand)) return false;
 
-  
-                SendFileData(stream);
-
-                // Nhận phản hồi từ server
-                string response = reader.ReadLine();
-                if (response != null && ServerResponse.FromJson(response).Status.Contains("OK"))
+                // Gửi dữ liệu file với timeout
+                if (!SendFileData(stream, timeoutSeconds: 10))
                 {
-                    Debug.WriteLine("File sent successfully");
-                    return true;
+                    Debug.WriteLine("Failed to send file data");
+                    return false;
                 }
+
+                // Đợi phản hồi từ server với timeout
+                var timeout = DateTime.Now.AddSeconds(10);
+                while (DateTime.Now < timeout)
+                {
+                    if (stream.DataAvailable)
+                    {
+                        string response = reader.ReadLine();
+                        if (response != null)
+                        {
+                            var serverResponse = ServerResponse.FromJson(response);
+                            if (serverResponse.Status.Contains("OK"))
+                            {
+                                Debug.WriteLine("File sent successfully");
+                                return true;
+                            }
+                            else
+                            {
+                                Debug.WriteLine($"Error response from server: {serverResponse.Status}");
+                                return false;
+                            }
+                        }
+                    }
+                }
+
+                Debug.WriteLine("Timeout waiting for server response");
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error in SendFile: {ex.Message}");
             }
+            finally
+            {
+                // Đảm bảo giải phóng tài nguyên
+                reader?.Dispose();
+                writer?.Dispose();
+                stream?.Dispose();
+            }
+
             return false;
         }
+
+
+
+
 
         private bool SendCommandAndCheckResponse(StreamWriter writer, StreamReader reader, object command)
         {
@@ -167,28 +133,60 @@ namespace MailClient_Controller.MailController
             }
         }
 
-        private void SendFileData(NetworkStream stream)
+
+        private bool SendFileData(NetworkStream stream, int timeoutSeconds = 10)
         {
             try
             {
                 using FileStream fileStream = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
-                byte[] buffer = new byte[64 * 1024]; 
+                byte[] buffer = new byte[64 * 1024]; // 64 KB buffer
                 int bytesRead;
+                DateTime timeout = DateTime.Now.AddSeconds(timeoutSeconds);
 
                 while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
                 {
+                    // Kiểm tra timeout
+                    if (DateTime.Now > timeout)
+                    {
+                        Debug.WriteLine("Timeout while sending file data");
+                        return false;
+                    }
+
                     stream.Write(buffer, 0, bytesRead);
                 }
+
                 stream.Flush();
+                Debug.WriteLine("File data sent successfully");
+                return true;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error in SendFileData: {ex.Message}");
+                return false;
             }
         }
 
 
 
+        //private void SendFileData(NetworkStream stream)
+        //{
+        //    try
+        //    {
+        //        using FileStream fileStream = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
+        //        byte[] buffer = new byte[64 * 1024];
+        //        int bytesRead;
+
+        //        while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
+        //        {
+        //            stream.Write(buffer, 0, bytesRead);
+        //        }
+        //        stream.Flush();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine($"Error in SendFileData: {ex.Message}");
+        //    }
+        //}
 
         private bool SendEmailRequest(object command)
         {
@@ -458,12 +456,6 @@ namespace MailClient_Controller.MailController
                 Command = "MAIL FORWARD",
                 Mailid = mail.Id,
             };
-            //var quitCommand = new
-            //{
-            //    Command = "QUIT"
-            //};
-
-
             return (SendEmailRequest(mailFromCommand) &&
                    SendEmailRequest(rcptToCommand) &&
                    SendEmailRequest(mailForwardCommand));

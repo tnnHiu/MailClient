@@ -49,7 +49,6 @@ namespace MailClient_UI.AppWindow.Modal
             string userEmail = UserName + "@vku.udn.vn";
             string receiver = txtTo.Text;
 
-
             Mail mailForward = new Mail(id, userEmail, receiver);
             mailController = new MailController(UserName);
             if (mailController.ForwardEmail(mailForward))

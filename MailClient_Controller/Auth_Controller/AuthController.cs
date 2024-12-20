@@ -1,4 +1,5 @@
 ﻿using MailClient_Controller.Enities;
+using MailClient_Controller.Service;
 using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Text;
@@ -8,9 +9,11 @@ namespace MailClient_Controller.Auth_Controller
     {
         IMAPService iMAPService = IMAPService.Instance;
 
+        SMTPService sMTPService = SMTPService.Instance;
+        FTPService fTPService = FTPService.Instance;
 
 
-        
+   
         private bool SendRequest(object command)
         {
             NetworkStream stream = null;
@@ -79,6 +82,19 @@ namespace MailClient_Controller.Auth_Controller
             };
             return SendRequest(loginCommand);
         }
+
+        //public bool SignOut()
+        //{
+        //    if ()
+        //    {
+        //        iMAPService.StopService();
+        //        fTPService.StopService();
+        //        sMTPService.StopService();          
+        //        return true;
+        //    }
+        //  return false ;
+        //}
+
     }
 }
 

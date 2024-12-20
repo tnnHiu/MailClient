@@ -50,8 +50,9 @@ namespace MailClient_UI.AppWindow.Modal
             string content = txtContent.Text;
 
 
-            if (txtAttach.Text == null)
+            if (txtAttach.Text == "")
             {
+
                 Mail mail = new Mail(username, receiver, subject, content);
                 mailController = new MailController(Username);
                 if (mailController.SendEmail(mail))

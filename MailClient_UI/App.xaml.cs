@@ -12,7 +12,8 @@ namespace MailClient_UI
             base.OnStartup(e);
             try
             {
-                string serverIp = "192.168.1.16";
+                //string serverIp = "192.168.1.16";
+                string serverIp = "192.168.239.190";
                 IMAPService.Instance.Initialize(serverIp);
                 SMTPService.Instance.Initialize(serverIp);
                 FTPService.Instance.Initialize(serverIp);
